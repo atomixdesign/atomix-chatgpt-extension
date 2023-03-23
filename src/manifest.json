@@ -1,0 +1,48 @@
+{
+  "name": "Atomix ChatGPT Sidebar",
+  "author": "Atomix",
+  "description": "A Productivity ChatGPT Sidebar made by Atomix",
+  "version": "1.0.1",
+  "manifest_version": 3,
+  "options_page": "options.html",
+  "host_permissions": [
+    "https://*.openai.com/",
+    "<all_urls>"
+  ],
+  "permissions": [
+    "storage",
+    "cookies",
+    "activeTab",
+    "contextMenus",
+    "scripting",
+    "clipboardRead",
+    "clipboardWrite"
+  ],
+  "background": {
+    "service_worker": "background.bundle.js"
+  },
+  "action": {
+    "default_title": "Atomix ChatGPT Sidebar",
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "icons": {
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*", "<all_urls>"],
+      "js": ["contentScript.bundle.js"],
+      "css": ["content.styles.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["content.styles.css", "icon.png"],
+      "matches": []
+    }
+  ]
+}
