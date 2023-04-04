@@ -1,8 +1,8 @@
 {
-  "name": "Atomix ChatGPT Sidebar",
+  "name": "Atomix ChatGPT Sidebar (Support GPT-4)",
   "author": "Atomix",
-  "description": "A Productivity ChatGPT Sidebar made by Atomix",
-  "version": "1.0.1",
+  "description": "A ChatGPT Sidebar with GPT-4 support made by Atomix",
+  "version": "1.0.0",
   "manifest_version": 3,
   "options_page": "options.html",
   "host_permissions": [
@@ -13,10 +13,7 @@
     "storage",
     "cookies",
     "activeTab",
-    "contextMenus",
-    "scripting",
-    "clipboardRead",
-    "clipboardWrite"
+    "scripting"
   ],
   "background": {
     "service_worker": "background.bundle.js"
@@ -26,23 +23,29 @@
     "default_popup": "popup.html",
     "default_icon": "icon.png"
   },
-  "chrome_url_overrides": {
-    "newtab": "newtab.html"
-  },
   "icons": {
     "128": "icon.png"
   },
   "content_scripts": [
     {
+      "js": ["contentScriptOpenAI.bundle.js"],
+      "matches": ["https://chat.openai.com/*"],
+      "run_at": "document_idle"
+    },
+    {
+      "js": [
+        "webcomponents-bundle.js",
+        "contentScript.bundle.js"
+      ],
+      "css": ["fonts.css"],
       "matches": ["http://*/*", "https://*/*", "<all_urls>"],
-      "js": ["contentScript.bundle.js"],
-      "css": ["content.styles.css"]
+      "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["content.styles.css", "icon.png"],
-      "matches": []
+      "resources": ["icon.png", "logo.svg", "openai.svg", "fonts.css", "Quicksand-Medium.ttf", "Quicksand-SemiBold.ttf", "Quicksand-Bold.ttf"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
