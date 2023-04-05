@@ -2,7 +2,7 @@ import { faCircleHalfStroke } from '@fortawesome/pro-duotone-svg-icons';
 import { faPaperPlaneTop } from '@fortawesome/pro-regular-svg-icons';
 import { ButtonBase, Grid, Input, Link, NativeSelect, Typography, styled } from '@mui/material';
 import { cloneDeep } from 'lodash';
-import React, { ComponentProps, useCallback, useRef } from 'react';
+import React, { ComponentProps, useCallback, useEffect, useRef } from 'react';
 import { v4 as uuidV4 } from "uuid";
 import { MESSAGE_PASSING_OPEN_OPTION_PAGE, MESSAGE_PASSING_PROMPT_OPENAI_CHAT } from '../../lib/consts';
 import { ColorModeContext } from '../../styles/theme';
@@ -21,6 +21,13 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, promptO
   const { toggleColorMode } = React.useContext(ColorModeContext)
   const { conversation, setConversation, conversationId } = React.useContext(ChatContext)
   const inputRef = useRef<HTMLTextAreaElement>()
+
+  // Focus on prompt input when sidebar opens
+  useEffect(() => {
+    if (isSidebarOpen && inputRef.current) {
+      inputRef.current?.focus()
+    }
+  }, [isSidebarOpen, inputRef.current])
 
   const onPromptChange = (e: any) => {
     e.stopPropagation();
