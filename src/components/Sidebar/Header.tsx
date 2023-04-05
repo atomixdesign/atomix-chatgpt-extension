@@ -20,7 +20,6 @@ export const Header: React.FC<HeaderProps> = ({ children, onSidebarClose, ...pro
       <Container>
         <StyledGrid container justifyContent={'space-between'} alignItems={'center'}>
           <Grid item>
-            {/* <img src={chrome.runtime ? chrome.runtime.getURL('logo.svg') : 'logo.svg'} /> */}
             <Logo />
           </Grid>
           <Grid item>

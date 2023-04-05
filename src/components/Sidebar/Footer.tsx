@@ -65,11 +65,15 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSideb
 
     if (onSidebarClose && event.key === "Escape") {
       onSidebarClose()
+
+      inputRef.current?.blur()
       event.preventDefault()
     }
 
     if (onSidebarClose && (event.metaKey || event.ctrlKey) && event.key == "g") {
       onSidebarClose()
+
+      inputRef.current?.blur()
       event.preventDefault()
     }
 
