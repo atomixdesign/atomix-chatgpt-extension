@@ -28,11 +28,6 @@
   },
   "content_scripts": [
     {
-      "js": ["contentScriptOpenAI.bundle.js"],
-      "matches": ["https://chat.openai.com/*"],
-      "run_at": "document_idle"
-    },
-    {
       "js": [
         "webcomponents-bundle.js",
         "contentScript.bundle.js"
