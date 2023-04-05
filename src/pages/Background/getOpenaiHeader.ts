@@ -1,5 +1,5 @@
 import { isNull } from "lodash"
-import { CHROME_STORAGE_OPENAI_CF_CLEARANCE_KEY, CHROME_STORAGE_OPENAI_SESSION_KEY, CHROME_STORAGE_OPENAI_USERAGENT_KEY } from "../../lib/consts"
+import { CHROME_STORAGE_OPENAI_CF_CLEARANCE_KEY, CHROME_STORAGE_OPENAI_SESSION_KEY, CHROME_STORAGE_OPENAI_USERAGENT_KEY, ENV } from "../../lib/consts"
 
 export const setOpenAIHeaderChromeStorage = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -26,7 +26,9 @@ export const setOpenAIHeaderChromeStorage = () => {
         [CHROME_STORAGE_OPENAI_SESSION_KEY]: sessionToken,
         [CHROME_STORAGE_OPENAI_USERAGENT_KEY]: userAgent
       }).then(() => {
-        console.log("SESSION_TOKEN is set to " + sessionToken)
+        if (ENV !== 'production') {
+          console.log("SESSION_TOKEN is set to " + sessionToken)
+        }
       })
     })
 
@@ -39,8 +41,6 @@ export const setOpenAIHeaderChromeStorage = () => {
 
       chrome.storage.local.set({
         [CHROME_STORAGE_OPENAI_CF_CLEARANCE_KEY]: cfClearance,
-      }).then(() => {
-        console.log("CF_CLEARANCE is set to " + cfClearance)
       })
     })
 

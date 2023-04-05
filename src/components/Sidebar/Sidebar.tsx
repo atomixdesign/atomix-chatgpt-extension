@@ -1,5 +1,6 @@
 import { styled } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useProfile } from '../../hooks/useProfile';
 import { useSidebarOpen } from '../../hooks/useSidebarOpen';
 import { useStreamListener } from '../../hooks/useStreamListener';
 import { ChatContext, ChatContextType, Message } from '../Chat/ChatContext';
@@ -34,6 +35,9 @@ export const Sidebar: React.FC<SidebarProps> = () => {
   // Stream Chat
   useStreamListener(chatContextValue)
   
+  // Profile
+  useProfile(chatContextValue)
+
   // Open or Close Sidebar action
   const onSidebarOpen = () => {
     setOpen(true)

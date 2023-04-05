@@ -11,11 +11,8 @@ export const setSidebarSettings = async (settings: SidebarSettings) => {
 export const getSidebarSettings = async () => {
   const results = await chrome.storage.local.get([CHROME_STORAGE_SIDEBAR_SETTINGS])
   if (!results[CHROME_STORAGE_SIDEBAR_SETTINGS]) {
-    console.log("DEBUG getSidebarSettings empty: ", results[CHROME_STORAGE_SIDEBAR_SETTINGS])
     return
   }
-  
-  console.log("DEBUG getSidebarSettings: ", JSON.parse(results[CHROME_STORAGE_SIDEBAR_SETTINGS]))
-  
+    
   return JSON.parse(results[CHROME_STORAGE_SIDEBAR_SETTINGS])
 }

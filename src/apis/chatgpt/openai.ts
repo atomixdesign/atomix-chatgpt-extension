@@ -2,6 +2,7 @@ import { v4 as uuidV4 } from "uuid";
 import { CHROME_STORAGE_OPENAI_SESSION_KEY, CHROME_STORAGE_OPENAI_USERAGENT_KEY, MESSAGE_PASSING_CONVERSATION_FAILED, MESSAGE_PASSING_STREAM_OPENAI_CHAT_PORT } from "../../lib/consts";
 import { getOpenAISessionInformation } from "../../storage/session";
 import { ConversationPayload, Model } from "../../types/openai";
+import { getProfile } from "./getProfile";
 import { getSessionAccessToken } from "./getSession";
 
 // This ChatGPTApi is invoked in the background service worker script.
@@ -28,6 +29,12 @@ class ChatGPTApi {
     }
 
     return this.accessToken;
+  }
+
+  async getUserProfile() {
+      const profile = await getProfile()
+
+      return profile
   }
 
   // TODO: Generalize class and function to accept any model from any OpenAI chat APIs.

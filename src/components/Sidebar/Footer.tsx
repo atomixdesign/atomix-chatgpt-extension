@@ -22,10 +22,10 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, promptO
   const { conversation, setConversation, conversationId } = React.useContext(ChatContext)
   const inputRef = useRef<HTMLTextAreaElement>()
 
-  const onPromptChange = useCallback((e: any) => {
+  const onPromptChange = (e: any) => {
+    e.stopPropagation();
     setPrompt(e.target.value)
-    e.preventDefault();
-  }, [prompt, setPrompt])
+  }
 
   const onSubmitGeneral = useCallback(() => {
     const oldConversation = cloneDeep(conversation)
@@ -55,7 +55,11 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, promptO
       event.preventDefault()
     }
 
-    event.stopPropagation(); 
+    event.stopPropagation();
+  }
+
+  const onTextFieldStopPropagation = (event: any) => {
+    event.stopPropagation();
   }
 
   const onSettingsClick = () => {
@@ -71,6 +75,8 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, promptO
             multiline={true}
             disableUnderline={true}
             onKeyDown={onTextFieldKeyDown}
+            onKeyUp={onTextFieldStopPropagation}
+            onKeyPress={onTextFieldStopPropagation}
             maxRows={6}
             value={prompt}
             placeholder='Enter or select a prompt...'

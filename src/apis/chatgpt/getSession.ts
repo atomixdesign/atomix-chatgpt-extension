@@ -44,6 +44,5 @@ export const getSessionAccessToken = async (userAgent: string, sessionToken: str
     throw new Error("Unable to get access token");
   }
 
-  console.log("DEBUG accessToken: ", accessToken)
   return accessToken;
 };
