@@ -54,6 +54,11 @@ export const Sidebar: React.FC<SidebarProps> = () => {
       e.preventDefault()
       setOpen(!open)
     }
+
+    if (e.key == "Escape") {
+      e.stopPropagation()
+      setOpen(false)
+    }
   }
 
   useEffect(() => {
