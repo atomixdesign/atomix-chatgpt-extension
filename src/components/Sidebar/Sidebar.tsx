@@ -78,7 +78,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
         <StyledSidebar $location={'right'} $open={open}>
           <Header onSidebarClose={onSidebarClose} />
           <ChatWindow />
-          <Footer isSidebarOpen={open} />
+          <Footer isSidebarOpen={open} onSidebarClose={onSidebarClose}/>
         </StyledSidebar>
       </StyledSidebarContainer>
     </ChatContext.Provider>

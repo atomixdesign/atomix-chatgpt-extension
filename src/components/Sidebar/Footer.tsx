@@ -14,9 +14,10 @@ import { Icon } from '../Icon/Icon';
 export type FooterProps = ComponentProps<typeof StyledFooter> & {
   promptOptions?: string[]
   isSidebarOpen?: boolean
+  onSidebarClose?: () => void
 }
 
-export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, promptOptions, ...props }) => {
+export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSidebarClose, promptOptions, ...props }) => {
   const [prompt, setPrompt] = React.useState<string>('')
   const { toggleColorMode } = React.useContext(ColorModeContext)
   const { conversation, setConversation, conversationId } = React.useContext(ChatContext)
@@ -59,6 +60,16 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, promptO
   const onTextFieldKeyDown = (event: any) => {
     if (!event.shiftKey && event.key === "Enter") {
       onSubmitGeneral()
+      event.preventDefault()
+    }
+
+    if (onSidebarClose && event.key === "Escape") {
+      onSidebarClose()
+      event.preventDefault()
+    }
+
+    if (onSidebarClose && (event.metaKey || event.ctrlKey) && event.key == "g") {
+      onSidebarClose()
       event.preventDefault()
     }
 
