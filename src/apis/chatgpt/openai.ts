@@ -36,8 +36,12 @@ class ChatGPTApi {
     const userAgent = session[CHROME_STORAGE_OPENAI_USERAGENT_KEY];
     const sessionToken = session[CHROME_STORAGE_OPENAI_SESSION_KEY];
     
-    let profile = null;
+    let profile;
     if (userAgent && sessionToken && !this.accessToken) {
+      this.accessToken = await getSessionAccessToken(userAgent, sessionToken);
+    }
+    
+    if (userAgent && sessionToken) {
       profile = await getProfile(userAgent, sessionToken)
     }
 
