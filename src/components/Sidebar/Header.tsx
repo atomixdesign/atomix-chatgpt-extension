@@ -1,22 +1,22 @@
 import { Grid, styled } from '@mui/material';
 import React, { ComponentProps } from 'react';
-import { MESSAGE_PASSING_OPEN_OPTION_PAGE } from '../../lib/consts';
 import { Button } from '../Button/Button';
 import { Container } from '../Container/Container';
 import { Logo } from '../Logo/Logo';
 
 export type HeaderProps = ComponentProps<typeof StyledHeader> & {
   onSidebarClose?: () => void
+  location?: 'left' | 'right'
 }
 
-export const Header: React.FC<HeaderProps> = ({ children, onSidebarClose, ...props }) => {
+export const Header: React.FC<HeaderProps> = ({ children, onSidebarClose, location, ...props }) => {
 
   const onSettingsClick = () => {
-    chrome.runtime.sendMessage({code: MESSAGE_PASSING_OPEN_OPTION_PAGE})
+    window.open(chrome.runtime.getURL('options.html'));
   }
 
   return (
-    <StyledHeader {...props}>
+    <StyledHeader $location={location} {...props}>
       <Container>
         <StyledGrid container justifyContent={'space-between'} alignItems={'center'}>
           <Grid item>
@@ -54,11 +54,11 @@ export const StyledNavListItem = styled('li')`
   
 `
 
-export const StyledHeader = styled('div')`
+export const StyledHeader = styled('div', { shouldForwardProp: (prop) => prop !== '$location' }) <{ $location?: 'left' | 'right' }>`
   position: relative;
   width: 100%;
   background-color: ${props => props.theme.palette.custom.darkBlue};
-  border-radius: ${props => props.theme.typography.pxToRem(24)} 0 0 0;
+  border-radius: ${props => props.$location === 'right' ? `${props.theme.typography.pxToRem(24)} 0 0 0` : `0 ${props.theme.typography.pxToRem(24)} 0 0`};
   
   &:before {
     content: '';

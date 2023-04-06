@@ -26,9 +26,11 @@ const lightTheme = {
     darkBlue: '#0F1822',
     openai: '#10A37F',
     inputField: '#fff',
+    outline: '#B9B9B9',
     avatar: '#0F1822',
     buttonLight: 'rgba(43, 187, 233, 0.2)',
     buttonDark: 'rgba(255, 255, 255, 0.25)',
+    option: 'rgba(0, 0, 0, 0.05)',
     error: '#B72A2A',
   },
   text: {
@@ -58,9 +60,11 @@ const darkTheme = {
     darkBlue: '#000000',
     openai: '#10A37F',
     inputField: '#343434',
+    outline: '#B9B9B9',
     avatar: '#606060',
     buttonLight: 'rgba(255, 255, 255, 0.25)',
     buttonDark: 'rgba(255, 255, 255, 0.25)',
+    option: 'rgba(255, 255, 255, 0.25)',
     error: '#FF7B7B',
   },
   text: {

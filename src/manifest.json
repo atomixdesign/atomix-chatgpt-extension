@@ -39,7 +39,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["icon.png", "logo.svg", "openai.svg", "fonts.css", "Quicksand-Medium.ttf", "Quicksand-SemiBold.ttf", "Quicksand-Bold.ttf"],
+      "resources": ["icon.png", "logo.svg", "openai.svg", "fonts.css", "Quicksand-Medium.ttf", "Quicksand-SemiBold.ttf", "Quicksand-Bold.ttf", "options.html"],
       "matches": ["<all_urls>"]
     }
   ]

@@ -17,4 +17,4 @@ export type ConversationPayload = {
   parent_message_id: string;
 }
 
-export type Model = 'gpt-4' | 'text-davinci-002-render-sha'
+export type ModelName = 'gpt-4' | 'text-davinci-002-render-sha'

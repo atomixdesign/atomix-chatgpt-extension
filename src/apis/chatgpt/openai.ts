@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from "uuid";
 import { CHROME_STORAGE_OPENAI_SESSION_KEY, CHROME_STORAGE_OPENAI_USERAGENT_KEY, MESSAGE_PASSING_CONVERSATION_FAILED, MESSAGE_PASSING_STREAM_OPENAI_CHAT_PORT } from "../../lib/consts";
 import { getOpenAISessionInformation } from "../../storage/session";
-import { ConversationPayload, Model } from "../../types/openai";
+import { ConversationPayload, ModelName } from "../../types/openai";
 import { getProfile } from "./getProfile";
 import { getSessionAccessToken } from "./getSession";
 
@@ -32,13 +32,20 @@ class ChatGPTApi {
   }
 
   async getUserProfile() {
-      const profile = await getProfile()
+    const session = await getOpenAISessionInformation();
+    const userAgent = session[CHROME_STORAGE_OPENAI_USERAGENT_KEY];
+    const sessionToken = session[CHROME_STORAGE_OPENAI_SESSION_KEY];
+    
+    let profile = null;
+    if (userAgent && sessionToken && !this.accessToken) {
+      profile = await getProfile(userAgent, sessionToken)
+    }
 
-      return profile
+    return profile
   }
 
   // TODO: Generalize class and function to accept any model from any OpenAI chat APIs.
-  async getConversation(message: string, messageId: string, conversationId?: string, parentMessageId?: string, modelName: Model='text-davinci-002-render-sha') {
+  async getConversation(message: string, messageId: string, conversationId?: string, parentMessageId?: string, modelName: ModelName='text-davinci-002-render-sha') {
     const session = await getOpenAISessionInformation();
     const userAgent = session[CHROME_STORAGE_OPENAI_USERAGENT_KEY];
     const sessionToken = session[CHROME_STORAGE_OPENAI_SESSION_KEY];

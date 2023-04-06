@@ -20,7 +20,7 @@ export type ChatContextType = {
 }
 
 export const ChatContext = React.createContext<ChatContextType>({
-  username: "TT",
+  username: "Atomix",
   title: "New chat",
   conversation: [],
   setUsername: (username: string) => {},

@@ -1,18 +1,21 @@
 import _ from "lodash";
 import React, { PropsWithChildren, createContext, useCallback, useEffect, useState } from "react";
 import { MESSAGE_PASSING_GET_SETTINGS, MESSAGE_PASSING_SETTINGS_PORT, MESSAGE_PASSING_UPDATE_SETTINGS } from "../lib/consts";
+import { ModelName } from "../types/openai";
 
+export type KeyboardShortcut = {
+  ctrlKey: boolean
+  altKey: boolean
+  shiftKey: boolean
+  metaKey: boolean
+  key: string
+}
 
 export type SidebarSettings = {
+  model: ModelName
   isDarkMode: boolean
   isSidebarIconDisplay: boolean
-  keyboardShortcut: {
-    ctrl: boolean
-    alt: boolean
-    shift: boolean
-    metaKey: boolean
-    key: string
-  }
+  keyboardShortcut: KeyboardShortcut
   sidebarLocation: 'left' | 'right'
 }
 
@@ -23,12 +26,13 @@ export type SidebarSettingsContextType = {
 }
 
 export const DEFAULT_SETTINGS: SidebarSettings = {
+  model: 'text-davinci-002-render-sha',
   isDarkMode: false,
   isSidebarIconDisplay: true,
   keyboardShortcut: {
-    ctrl: true,
-    alt: false,
-    shift: false,
+    ctrlKey: true,
+    altKey: false,
+    shiftKey: false,
     metaKey: true,
     key: 'g'
   },

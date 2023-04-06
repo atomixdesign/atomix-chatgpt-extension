@@ -18,7 +18,7 @@ export const useProfile = ({
 
       port.onMessage.addListener((msg) => {
         if (msg.name) {
-          setUsername(msg.name || 'T')
+          setUsername(msg.name || 'A')
           
           return
         }

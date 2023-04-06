@@ -22,7 +22,7 @@ export const StyledSidebarHandle = styled(ButtonBase, { shouldForwardProp: (prop
   bottom: ${props => props.theme.typography.pxToRem(150)};
   ${props => props.$location === 'left' ? 'left: 0' : 'right: 0'};
   z-index: 99999999;
-  border-radius: ${props => props.theme.typography.pxToRem(24)} 0 0 ${props => props.theme.typography.pxToRem(24)};
+  border-radius: ${props => props.$location === 'left' ? `0 ${props.theme.typography.pxToRem(24)} ${props.theme.typography.pxToRem(24)} 0` : `${props.theme.typography.pxToRem(24)} 0 0 ${props.theme.typography.pxToRem(24)}`} ;
   background-color: ${props => props.theme.palette.custom.darkBlue};
   padding: ${props => props.theme.typography.pxToRem(14)} ${props => props.theme.typography.pxToRem(10)} ${props => props.theme.typography.pxToRem(14)} ${props => props.theme.typography.pxToRem(14)};
 
@@ -40,10 +40,10 @@ export const StyledSidebarHandle = styled(ButtonBase, { shouldForwardProp: (prop
   }
 
   &:hover:after {
-    left: -1px;
-    right: 0;
+    left: ${props => props.$location === 'right' ? '-1px' : 0};
+    right: ${props => props.$location === 'left' ? '-1px' : 0};
     bottom: 0;
     top: 0;
-    border-radius: ${props => props.theme.typography.pxToRem(24)} 0 0 ${props => props.theme.typography.pxToRem(24)};
+    border-radius: ${props => props.$location === 'left' ? `0 ${props.theme.typography.pxToRem(24)} ${props.theme.typography.pxToRem(24)} 0` : `${props.theme.typography.pxToRem(24)} 0 0 ${props.theme.typography.pxToRem(24)}`} ;
   }
 `

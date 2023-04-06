@@ -4,7 +4,9 @@ import { ButtonBase, Grid, Input, Link, NativeSelect, Typography, styled } from 
 import { cloneDeep } from 'lodash';
 import React, { ComponentProps, useCallback, useEffect, useRef } from 'react';
 import { v4 as uuidV4 } from "uuid";
-import { MESSAGE_PASSING_OPEN_OPTION_PAGE, MESSAGE_PASSING_PROMPT_OPENAI_CHAT } from '../../lib/consts';
+import { MESSAGE_PASSING_PROMPT_OPENAI_CHAT } from '../../lib/consts';
+import { stringifyKeys } from '../../lib/stringifyKeys';
+import { SidebarSettings } from '../../settings/sidebar';
 import { ColorModeContext } from '../../styles/theme';
 import { Button } from '../Button/Button';
 import { ChatContext } from '../Chat/ChatContext';
@@ -15,9 +17,10 @@ export type FooterProps = ComponentProps<typeof StyledFooter> & {
   promptOptions?: string[]
   isSidebarOpen?: boolean
   onSidebarClose?: () => void
+  settings?: SidebarSettings
 }
 
-export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSidebarClose, promptOptions, ...props }) => {
+export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSidebarClose, promptOptions, settings, ...props }) => {
   const [prompt, setPrompt] = React.useState<string>('')
   const { toggleColorMode } = React.useContext(ColorModeContext)
   const { conversation, setConversation, conversationId } = React.useContext(ChatContext)
@@ -48,7 +51,8 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSideb
       prompt: prompt,
       messageId: messageId,
       conversationId: conversationId,
-      parentMessageId: oldConversation[oldConversation.length - 1]?.id || undefined
+      parentMessageId: oldConversation[oldConversation.length - 1]?.id || undefined,
+      modelName: settings?.model
     })
   }, [prompt, setPrompt, setConversation])
 
@@ -70,7 +74,7 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSideb
       event.preventDefault()
     }
 
-    if (onSidebarClose && (event.metaKey || event.ctrlKey) && event.key == "g") {
+    if (onSidebarClose && settings && stringifyKeys(settings.keyboardShortcut) === stringifyKeys(event)) {
       onSidebarClose()
 
       inputRef.current?.blur()
@@ -84,8 +88,13 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSideb
     event.stopPropagation();
   }
 
-  const onSettingsClick = () => {
-    chrome.runtime.sendMessage({ code: MESSAGE_PASSING_OPEN_OPTION_PAGE })
+  const onGiveFeedbackClick = () => {
+    window.open(`${chrome.runtime.getURL('options.html')}?option=2`);
+  }
+
+  const onReviewClick = () => {
+    const extensionId = chrome.runtime.id;
+    window.open(`https://chrome.google.com/webstore/detail/atomix-chatgpt-sidebar/${extensionId}/reviews`);
   }
 
   return (
@@ -122,12 +131,12 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSideb
         <StyledAccessoryBar container justifyContent={'space-between'}>
           <Grid item>
             <StyledLinkContainer>
-              <StyledLink onClick={onSettingsClick}>
+              <StyledLink onClick={onReviewClick}>
                 <Typography variant="body1">
                   Review us
                 </Typography>
               </StyledLink>
-              <StyledLink onClick={onSettingsClick}>
+              <StyledLink onClick={onGiveFeedbackClick}>
                 <Typography variant="body1">
                   Give feedback
                 </Typography>
