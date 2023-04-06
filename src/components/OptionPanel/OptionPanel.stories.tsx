@@ -26,7 +26,7 @@ export const Default: Story<any> = () => {
                 General
               </OptionPanelListItem>
               <OptionPanelListItem idx={1}>
-                Upcoming releases
+                Releases
               </OptionPanelListItem>
               <OptionPanelListItem idx={2}>
                 Contact us
@@ -38,7 +38,7 @@ export const Default: Story<any> = () => {
               This is the General Option Panel
             </OptionPanelMain>
             <OptionPanelMain idx={1}>
-              This is the Upcoming Releases Panel
+              This is the Releases Panel
             </OptionPanelMain>
             <OptionPanelMain idx={2}>
               This is the Contact Us Panel

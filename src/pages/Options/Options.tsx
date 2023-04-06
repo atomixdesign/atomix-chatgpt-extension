@@ -7,7 +7,7 @@ import { OptionPanelMain } from '../../components/OptionPanel/OptionPanelMain';
 import { OptionPanelWrapper } from '../../components/OptionPanel/OptionPanelWrapper';
 import { ContactUs } from './modules/ContactUs/ContactUs';
 import { GeneralOption } from './modules/GeneralOption/GeneralOption';
-import { UpcomingRelease } from './modules/UpcomingRelease/UpcomingRelease';
+import { Release } from './modules/Release/Release';
 
 export type OptionsProps = {
   //
@@ -18,7 +18,9 @@ export const Options: React.FC<OptionsProps> = (props) => {
     <div {...props}>
       <StyledHeader>
         <Container maxWidth="xl">
-          <Logo />
+          <a href="https://www.atomix.com.au/" target="_blank">
+            <Logo />
+          </a>
         </Container>
       </StyledHeader>
       <StyledBody>
@@ -32,7 +34,7 @@ export const Options: React.FC<OptionsProps> = (props) => {
                     General
                   </OptionPanelListItem>
                   <OptionPanelListItem idx={1}>
-                    Upcoming releases
+                    Releases
                   </OptionPanelListItem>
                   <OptionPanelListItem idx={2}>
                     Contact us
@@ -45,7 +47,7 @@ export const Options: React.FC<OptionsProps> = (props) => {
                     <GeneralOption />
                   </OptionPanelMain>
                   <OptionPanelMain idx={1}>
-                    <UpcomingRelease />
+                    <Release />
                   </OptionPanelMain>
                   <OptionPanelMain idx={2}>
                     <ContactUs />
@@ -73,8 +75,11 @@ export const StyledBody = styled('div')`
 `
 
 export const StyledPanelContainer = styled('div')`
-  margin-top: ${(props) => props.theme.typography.pxToRem(40)};
-  margin-left: ${(props) => props.theme.typography.pxToRem(50)};
   border-radius: ${(props) => props.theme.typography.pxToRem(20)};
   border: 1px solid ${(props) => props.theme.palette.custom.outline};
+
+  ${(props) => props.theme.breakpoints.up('md')} {
+    margin-top: ${(props) => props.theme.typography.pxToRem(40)};
+    margin-left: ${(props) => props.theme.typography.pxToRem(50)};
+  }
 `
