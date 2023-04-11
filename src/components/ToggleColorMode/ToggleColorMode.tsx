@@ -1,12 +1,14 @@
 import { BreakpointMap, RemScalingOptions } from '@atomixdesign/rem-scaling';
-import { InlineFontSetter, RemScalingProvider } from '@atomixdesign/rem-scaling-react';
+import { RemScalingProvider } from '@atomixdesign/rem-scaling-react';
 import { ThemeProvider as MuiThemeProvider, Theme, createTheme, useTheme } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { SidebarSettingsContext } from '../../settings/sidebar';
 import { ColorModeContext, getDesignTokens } from '../../styles/theme';
 
 export type ToggleColorModeProps = {
   children: React.ReactNode;
-};
+  shadowRootElement?: string;
+}
 
 export const useThemeBreakpoints = (): BreakpointMap => {
   const theme = useTheme()
@@ -28,17 +30,33 @@ export const useThemeBreakpoints = (): BreakpointMap => {
   }, {} as BreakpointMap)
 }
 
-export const ToggleColorMode: React.FC<ToggleColorModeProps> = ({ children }) => {
-  const [mode, setMode] = useState<'light' | 'dark'>('light')
-  const colorMode = useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
-      },
-    }),
-    [],
-  )
-  const theme: Theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode])
+export const ToggleColorMode: React.FC<ToggleColorModeProps> = ({ shadowRootElement, children }) => {
+  const {loaded, loading, updateSettings, ...settings} = useContext(SidebarSettingsContext)
+  const [mode, setMode] = useState<'light' | 'dark'>()
+  const colorMode = useMemo(() => ({
+    toggleColorMode: () => {
+      updateSettings({
+        isDarkMode: mode === 'light'
+      })
+    },
+  }), [mode, updateSettings])
+
+  useEffect(() => {
+    // Initialize the color theme mode
+    if (loaded) {
+      setMode(settings.isDarkMode ? 'dark' : 'light')
+    }
+  }, [loaded, settings.isDarkMode])
+
+  const theme: Theme = React.useMemo(() => createTheme(getDesignTokens(mode || 'light'), {
+    components: {
+      MuiMenu: {
+        defaultProps: {
+          container: document.querySelector(shadowRootElement || '#atomixSidebar')
+        }
+      }
+    },
+  }), [mode])
 
   const themeBreakpoints = useThemeBreakpoints()
 
@@ -51,14 +69,15 @@ export const ToggleColorMode: React.FC<ToggleColorModeProps> = ({ children }) =>
   }
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={theme}>
+      <ColorModeContext.Provider value={colorMode}>
         {/* @ts-ignore */}
         <RemScalingProvider options={remScaling}>
-          <InlineFontSetter />
+          {/* Need to fix Rem scaling and make the fontSize reponsive to shadow-root only*/}
+          {/* <InlineFontSetter /> */}
           {children}
         </RemScalingProvider>
-      </MuiThemeProvider>
-    </ColorModeContext.Provider>
+      </ColorModeContext.Provider>
+    </MuiThemeProvider>
   )
 }

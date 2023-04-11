@@ -21,11 +21,10 @@ This is an Atomix Chrome Extension that wrap arounds ChatGPT, providing addition
 
 1. Check if your [Node.js](https://nodejs.org/) version is >= **18**.
 2. Clone this repository.
-3. Change the package's `name`, `description`, and `repository` fields in `package.json`.
-4. Change the name of your extension on `src/manifest.json`.
-5. Run `yarn install` to install the dependencies.
-6. Run `yarn build` or `yarn dev` for hot-reload dev mode
-7. Load your extension on Chrome following:
+3. Add fontawesome pro token via `.npmrc` file
+4. Run `yarn install` to install the dependencies.
+5. Run `yarn build` or `yarn dev` for hot-reload dev mode
+6. Load your extension on Chrome following:
    1. Access `chrome://extensions/`
    2. Check `Developer mode`
    3. Click on `Load unpacked extension`
@@ -117,6 +116,7 @@ ApiCall({ key: secrets.key });
 - [Chrome Extension documentation](https://developer.chrome.com/extensions/getstarted)
 
 ---
-Credit:
+## Credit:
 
-React Chrome Extension Boiler Plate Template: Michael Xieyang Liu | [Website](https://lxieyang.github.io)
+React Chrome Extension Boiler Plate Template:
+- Michael Xieyang Liu | [Website](https://github.com/lxieyang/chrome-extension-boilerplate-react)
