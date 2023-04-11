@@ -37,11 +37,14 @@ var obs = new MutationObserver(debounce(() => {
 obs.observe(document.body, { childList: true, subtree: true, attributes: false, characterData: false });
 
 // Hide horizontal scroll bar
-if (document.documentElement) {
+const windowLocation = window.location.href;
+if (document.documentElement && windowLocation.includes('youtube.com')) {
   document.documentElement.style.overflowX = 'hidden';
 }
 
 // Render sidebar next to the body element
-const sidebar = document.createElement('atomix-sidebar-component');
-sidebar.setAttribute("id", "atomixSidebar");
-document.body.insertAdjacentElement("afterend", sidebar);
+if (!document.getElementById('atomixSidebar')) {
+  const sidebar = document.createElement('atomix-sidebar-component');
+  sidebar.setAttribute("id", "atomixSidebar");
+  document.body.insertAdjacentElement("afterend", sidebar);
+}

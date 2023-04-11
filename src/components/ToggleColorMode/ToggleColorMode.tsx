@@ -7,6 +7,7 @@ import { ColorModeContext, getDesignTokens } from '../../styles/theme';
 
 export type ToggleColorModeProps = {
   children: React.ReactNode;
+  shadowRootElement?: string;
 }
 
 export const useThemeBreakpoints = (): BreakpointMap => {
@@ -29,7 +30,7 @@ export const useThemeBreakpoints = (): BreakpointMap => {
   }, {} as BreakpointMap)
 }
 
-export const ToggleColorMode: React.FC<ToggleColorModeProps> = ({ children }) => {
+export const ToggleColorMode: React.FC<ToggleColorModeProps> = ({ shadowRootElement, children }) => {
   const {loaded, loading, updateSettings, ...settings} = useContext(SidebarSettingsContext)
   const [mode, setMode] = useState<'light' | 'dark'>()
   const colorMode = useMemo(() => ({
@@ -47,7 +48,15 @@ export const ToggleColorMode: React.FC<ToggleColorModeProps> = ({ children }) =>
     }
   }, [loaded, settings.isDarkMode])
 
-  const theme: Theme = React.useMemo(() => createTheme(getDesignTokens(mode || 'light')), [mode])
+  const theme: Theme = React.useMemo(() => createTheme(getDesignTokens(mode || 'light'), {
+    components: {
+      MuiMenu: {
+        defaultProps: {
+          container: document.querySelector(shadowRootElement || '#atomixSidebar')
+        }
+      }
+    },
+  }), [mode])
 
   const themeBreakpoints = useThemeBreakpoints()
 

@@ -94,7 +94,7 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSideb
 
   const onReviewClick = () => {
     const extensionId = chrome.runtime.id;
-    window.open(`https://chrome.google.com/webstore/detail/atomix-chatgpt-sidebar/${extensionId}/reviews`);
+    window.open(`https://chrome.google.com/webstore/detail/${extensionId}/reviews`);
   }
 
   return (
@@ -110,7 +110,7 @@ export const Footer: React.FC<FooterProps> = ({ children, isSidebarOpen, onSideb
             onKeyPress={onTextFieldStopPropagation}
             maxRows={6}
             value={prompt}
-            placeholder='Enter or select a prompt...'
+            placeholder='Enter a prompt...'
             onChange={onPromptChange}
             inputRef={inputRef}
           />

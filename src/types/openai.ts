@@ -18,3 +18,8 @@ export type ConversationPayload = {
 }
 
 export type ModelName = 'gpt-4' | 'text-davinci-002-render-sha'
+
+export type ChatHistory = {
+  id: string;
+  title: string;
+}

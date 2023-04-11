@@ -1,7 +1,7 @@
 import { isNull } from "lodash"
 import { useEffect } from "react"
 import { ChatContextType, Message } from "../components/Chat/ChatContext"
-import { ENV, MESSAGE_PASSING_CONVERSATION_FAILED, MESSAGE_PASSING_STREAM_OPENAI_CHAT_PORT } from "../lib/consts"
+import { ENV, MESSAGE_PASSING_CONVERSATION_FAILED, MESSAGE_PASSING_GET_OPENAI_CHAT_HISTORY, MESSAGE_PASSING_STREAM_OPENAI_CHAT_PORT } from "../lib/consts"
 
 export const useStreamListener = ({
   conversation,
@@ -40,6 +40,10 @@ export const useStreamListener = ({
               ...chatMessageState,
               isStreaming: false
             }])
+
+            if (conversation.length <= 1 && !chatMessageState.isError) {
+              chrome.runtime.sendMessage({ code: MESSAGE_PASSING_GET_OPENAI_CHAT_HISTORY })
+            }
           }
           return
         }
@@ -51,7 +55,6 @@ export const useStreamListener = ({
           data = JSON.parse(msg.slice(6,))
         }
         catch (e) {
-          // console.warn("DEBUG: Parse data failed", e)
           return
         }
 

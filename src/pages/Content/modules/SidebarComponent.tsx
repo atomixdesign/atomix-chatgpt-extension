@@ -33,7 +33,7 @@ export class SidebarComponent extends HTMLElement {
       <StylesProvider jss={jss}>
         <CacheProvider value={cache}>
           <SidebarSettingsProvider>
-            <ToggleColorMode>
+            <ToggleColorMode shadowRootElement={'#atomixSidebar'}>
               <Sidebar />
             </ToggleColorMode>
           </SidebarSettingsProvider>

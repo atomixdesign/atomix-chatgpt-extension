@@ -2,6 +2,7 @@ import React from "react";
 
 export type Message = {
   id?: string;
+  parentId?: string;
   isError?: boolean;
   isChatGPT?: boolean;
   isStreaming?: boolean;
@@ -13,7 +14,7 @@ export type ChatContextType = {
   title?: string
   conversation: Message[]
   conversationId?: string
-  setConversationId?: (conversationId: string) => void
+  setConversationId?: (conversationId: string | undefined) => void
   setTitle?: (title: string) => void
   setUsername?: (username: string) => void
   setConversation?: (conversation: Message[]) => void

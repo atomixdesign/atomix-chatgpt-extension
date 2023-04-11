@@ -28,7 +28,7 @@ export const StyledButton = styled(ButtonBase, { shouldForwardProp: (prop) => pr
     bottom: 0;
     top: 0;
     background-color: ${props => props.$fontColor === 'light' ? props.theme.palette.custom.buttonLight : props.theme.palette.custom.buttonDark};
-    z-index: 2;
+    z-index: 10;
     opacity: 0;
     border-radius: ${props => props.theme.typography.pxToRem(20)};
     transition: top 0.2s ease, bottom 0.2s ease, left 0.2s ease, right 0.2s ease, opacity 0.2s ease;

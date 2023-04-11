@@ -33,7 +33,7 @@ export const DEFAULT_SETTINGS: SidebarSettings = {
     ctrlKey: true,
     altKey: false,
     shiftKey: false,
-    metaKey: true,
+    metaKey: false,
     key: 'g'
   },
   sidebarLocation: 'right'

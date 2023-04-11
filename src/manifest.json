@@ -6,8 +6,7 @@
   "manifest_version": 3,
   "options_page": "options.html",
   "host_permissions": [
-    "https://*.openai.com/",
-    "<all_urls>"
+    "https://*.openai.com/"
   ],
   "permissions": [
     "storage",

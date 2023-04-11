@@ -2,7 +2,7 @@
 
 import "regenerator-runtime/runtime.js";
 import { chatGPTApi } from "../../apis/chatgpt/openai";
-import { MESSAGE_PASSING_GET_OPENAI_PROFILE, MESSAGE_PASSING_GET_SETTINGS, MESSAGE_PASSING_OPEN_OPENAI_CHAT_PAGE, MESSAGE_PASSING_PROFILE_PORT, MESSAGE_PASSING_PROMPT_OPENAI_CHAT, MESSAGE_PASSING_SETTINGS_PORT, MESSAGE_PASSING_UPDATE_SETTINGS } from "../../lib/consts";
+import { MESSAGE_PASSING_GET_OPENAI_CHAT_BY_ID, MESSAGE_PASSING_GET_OPENAI_CHAT_HISTORY, MESSAGE_PASSING_GET_OPENAI_CHAT_NAME, MESSAGE_PASSING_GET_OPENAI_PROFILE, MESSAGE_PASSING_GET_SETTINGS, MESSAGE_PASSING_OPEN_OPENAI_CHAT_PAGE, MESSAGE_PASSING_PROFILE_PORT, MESSAGE_PASSING_PROMPT_OPENAI_CHAT, MESSAGE_PASSING_SETTINGS_PORT, MESSAGE_PASSING_UPDATE_SETTINGS } from "../../lib/consts";
 import { getSidebarSettings, setSidebarSettings } from "../../storage/settings";
 import { setOpenAIHeaderChromeStorage } from "./getOpenaiHeader";
 
@@ -16,6 +16,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.code === MESSAGE_PASSING_PROMPT_OPENAI_CHAT) {
     // check header, if not, redirect to openai page and let it set the header.
     chatGPTApi.getConversation(request.prompt, request.messageId, request.conversationId, request.parentMessageId, request.modelName)
+  }
+  
+  if (request.code === MESSAGE_PASSING_GET_OPENAI_CHAT_HISTORY) {
+    chatGPTApi.getConversationHistory()
+  }
+
+  if (request.code === MESSAGE_PASSING_GET_OPENAI_CHAT_BY_ID) {
+    chatGPTApi.getConversationById(request.conversationId)
+  }
+
+  if (request.code === MESSAGE_PASSING_GET_OPENAI_CHAT_NAME) {
+    chatGPTApi.getConversationName(request.conversationId, request.messageId)
   }
 
   if (request.code === MESSAGE_PASSING_UPDATE_SETTINGS) {

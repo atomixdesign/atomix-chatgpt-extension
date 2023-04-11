@@ -77,6 +77,7 @@ export const StyledBody = styled('div')`
 export const StyledPanelContainer = styled('div')`
   border-radius: ${(props) => props.theme.typography.pxToRem(20)};
   border: 1px solid ${(props) => props.theme.palette.custom.outline};
+  margin-top: ${(props) => props.theme.typography.pxToRem(20)};
 
   ${(props) => props.theme.breakpoints.up('md')} {
     margin-top: ${(props) => props.theme.typography.pxToRem(40)};
