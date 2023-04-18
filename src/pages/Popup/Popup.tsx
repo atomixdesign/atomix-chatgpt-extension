@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import React from 'react';
 import { MESSAGE_PASSING_TOGGLE_SIDEBAR } from '../../lib/consts';
 
@@ -21,10 +21,14 @@ export const Popup: React.FC<PopupProps> = ({ ...props }) => {
   toggleSidebar()
 
   return (
-    <>
-      <Typography variant="body1">
-        After installation, refresh the page if the sidebar is not showing.
+    <StyledBox>
+      <Typography variant="body2">
+        After completing the installation, please try refreshing the page if the sidebar doesn't appear. In case the sidebar still isn't visible, it could mean that the browser version or webpage is not compatible with the sidebar.
       </Typography>
-    </>
+    </StyledBox>
   )
 }
+
+export const StyledBox = styled(Box)`
+  width: 260px;
+`
