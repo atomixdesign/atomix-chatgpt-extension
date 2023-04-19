@@ -1,3 +1,4 @@
+import { openChatTab } from "../../lib/openOpenAITab";
 import { getOpenAIAccessToken, setOpenAIAccessToken } from "../../storage/accessToken";
 
 export const getProfile = async (userAgent: string, sessionToken: string) => {
@@ -35,7 +36,7 @@ export const getProfile = async (userAgent: string, sessionToken: string) => {
       .then((response) => response.json())
   }
   catch (error) {
-    chrome.tabs.create({ url: 'https://chat.openai.com/chat' })
+    openChatTab()
   }
   setOpenAIAccessToken(res)
 

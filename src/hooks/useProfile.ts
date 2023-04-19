@@ -1,7 +1,7 @@
-import { isNull } from "lodash"
 import { useEffect } from "react"
 import { ChatContextType } from "../components/Chat/ChatContext"
 import { ENV, MESSAGE_PASSING_GET_OPENAI_PROFILE, MESSAGE_PASSING_PROFILE_PORT } from "../lib/consts"
+import { isNull } from "../lib/isNull"
 
 export const useProfile = ({
   setUsername

@@ -1,8 +1,8 @@
 {
-  "name": "Atomix ChatGPT Sidebar (Support GPT-4)",
+  "name": "ChatGPT Sidebar by Atomix (Support ChatGPT 4)",
   "author": "Atomix",
-  "description": "A ChatGPT Sidebar with GPT-4 support made by Atomix",
-  "version": "1.0.0",
+  "description": "A ChatGPT Sidebar with Chat GPT 4 support made by Atomix.",
+  "version": "1.0.1",
   "manifest_version": 3,
   "options_page": "options.html",
   "host_permissions": [

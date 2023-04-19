@@ -1,13 +1,12 @@
 import { Box, Typography, styled } from '@mui/material';
 import React from 'react';
-import { MESSAGE_PASSING_TOGGLE_SIDEBAR } from '../../lib/consts';
+import { MESSAGE_PASSING_GET_OPENAI_SESSION_TOKEN, MESSAGE_PASSING_TOGGLE_SIDEBAR } from '../../lib/consts';
 
 export type PopupProps = {
   //
 }
 
 export const Popup: React.FC<PopupProps> = ({ ...props }) => {
-
   const toggleSidebar = async () => {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
     const tab = tabs[0]
@@ -18,6 +17,11 @@ export const Popup: React.FC<PopupProps> = ({ ...props }) => {
     }
   }
 
+  const handleAuth = async () => {
+    await chrome.runtime.sendMessage({ code: MESSAGE_PASSING_GET_OPENAI_SESSION_TOKEN })
+  }
+
+  handleAuth()
   toggleSidebar()
 
   return (

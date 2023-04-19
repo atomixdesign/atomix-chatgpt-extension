@@ -2,15 +2,22 @@
 
 import "regenerator-runtime/runtime.js";
 import { chatGPTApi } from "../../apis/chatgpt/openai";
-import { MESSAGE_PASSING_GET_OPENAI_CHAT_BY_ID, MESSAGE_PASSING_GET_OPENAI_CHAT_HISTORY, MESSAGE_PASSING_GET_OPENAI_CHAT_NAME, MESSAGE_PASSING_GET_OPENAI_PROFILE, MESSAGE_PASSING_GET_SETTINGS, MESSAGE_PASSING_OPEN_OPENAI_CHAT_PAGE, MESSAGE_PASSING_PROFILE_PORT, MESSAGE_PASSING_PROMPT_OPENAI_CHAT, MESSAGE_PASSING_SETTINGS_PORT, MESSAGE_PASSING_UPDATE_SETTINGS } from "../../lib/consts";
+import { CHROME_STORAGE_OPENAI_SESSION_KEY, MESSAGE_PASSING_GET_OPENAI_CHAT_BY_ID, MESSAGE_PASSING_GET_OPENAI_CHAT_HISTORY, MESSAGE_PASSING_GET_OPENAI_CHAT_NAME, MESSAGE_PASSING_GET_OPENAI_PROFILE, MESSAGE_PASSING_GET_OPENAI_SESSION_TOKEN, MESSAGE_PASSING_GET_SETTINGS, MESSAGE_PASSING_PROFILE_PORT, MESSAGE_PASSING_PROMPT_OPENAI_CHAT, MESSAGE_PASSING_SETTINGS_PORT, MESSAGE_PASSING_UPDATE_SETTINGS } from "../../lib/consts";
+import { isNull } from "../../lib/isNull";
+import { openChatTab } from "../../lib/openOpenAITab";
+import { getOpenAISessionInformation } from "../../storage/session";
 import { getSidebarSettings, setSidebarSettings } from "../../storage/settings";
 import { setOpenAIHeaderChromeStorage } from "./getOpenaiHeader";
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  //Listen for messages from content scripts and send a response if
-
-  if (request.code === MESSAGE_PASSING_OPEN_OPENAI_CHAT_PAGE) {
-    chrome.tabs.create({ url: 'https://chat.openai.com/chat' })
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+  //Listen for messages from content scripts and send a response based on the request code
+  
+  if (request.code === MESSAGE_PASSING_GET_OPENAI_SESSION_TOKEN) {
+    getOpenAISessionInformation().then((accessToken) => {
+      if (isNull(accessToken[CHROME_STORAGE_OPENAI_SESSION_KEY])) {
+        openChatTab()
+      }
+    })
   }
 
   if (request.code === MESSAGE_PASSING_PROMPT_OPENAI_CHAT) {

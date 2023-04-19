@@ -19,6 +19,10 @@ export const StyledErrorText = styled(Typography)`
   letter-spacing: 3%;
   line-height: 1.4;
   white-space: pre-line;
+
+  a {
+    color: ${props => props.theme.palette.custom.error};
+  }
 `
 
 export const StyledReactMarkdown = styled(ReactMarkdown, { shouldForwardProp: (prop) => prop !== '$isStreaming' })<{ $isStreaming?: boolean }>`

@@ -1,11 +1,8 @@
+import { openChatTab } from "../../lib/openOpenAITab";
 import { getOpenAIAccessToken, setOpenAIAccessToken } from "../../storage/accessToken";
 
 export const getSessionAccessToken = async (userAgent: string, sessionToken: string) => {
   let res = await getOpenAIAccessToken()
-
-  // if (res) {
-  //   return res?.accessToken
-  // }
 
   const url = "https://chat.openai.com/api/auth/session";
   const headers = {
@@ -34,7 +31,7 @@ export const getSessionAccessToken = async (userAgent: string, sessionToken: str
       .then((response) => response.json())
   }
   catch (error) {
-    chrome.tabs.create({ url: 'https://chat.openai.com/chat' })
+    openChatTab()
   }
 
   setOpenAIAccessToken(res)
