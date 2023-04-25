@@ -1,4 +1,3 @@
-import { openChatTab } from "../../lib/openOpenAITab";
 import { getOpenAIAccessToken, setOpenAIAccessToken } from "../../storage/accessToken";
 
 export const getProfile = async (userAgent: string, sessionToken: string) => {
@@ -36,7 +35,7 @@ export const getProfile = async (userAgent: string, sessionToken: string) => {
       .then((response) => response.json())
   }
   catch (error) {
-    openChatTab()
+    throw new Error("Fetch Failed");
   }
   setOpenAIAccessToken(res)
 

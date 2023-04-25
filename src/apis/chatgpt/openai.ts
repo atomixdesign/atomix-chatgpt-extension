@@ -1,6 +1,5 @@
 import { v4 as uuidV4 } from "uuid";
-import { CHROME_STORAGE_OPENAI_SESSION_KEY, CHROME_STORAGE_OPENAI_USERAGENT_KEY, MESSAGE_PASSING_CONVERSATION_FAILED, MESSAGE_PASSING_OPENAI_CHAT_BY_ID_PORT, MESSAGE_PASSING_OPENAI_CHAT_HISTORY_PORT, MESSAGE_PASSING_STEAM_OPENAI_CHAT_NAME_PORT, MESSAGE_PASSING_STREAM_OPENAI_CHAT_PORT } from "../../lib/consts";
-import { openChatTab } from "../../lib/openOpenAITab";
+import { CHROME_STORAGE_OPENAI_SESSION_KEY, CHROME_STORAGE_OPENAI_USERAGENT_KEY, MESSAGE_PASSING_CONVERSATION_FAILED, MESSAGE_PASSING_OPENAI_CHAT_BY_ID_PORT, MESSAGE_PASSING_OPENAI_CHAT_HISTORY_PORT, MESSAGE_PASSING_STEAM_OPENAI_CHAT_NAME_PORT, MESSAGE_PASSING_STOP_STREAM_OPENAI_CHAT, MESSAGE_PASSING_STREAM_OPENAI_CHAT_PORT } from "../../lib/consts";
 import { getOpenAISessionInformation } from "../../storage/session";
 import { ConversationPayload, ModelName } from "../../types/openai";
 import { getProfile } from "./getProfile";
@@ -54,6 +53,8 @@ class ChatGPTApi {
     const session = await getOpenAISessionInformation();
     const userAgent = session[CHROME_STORAGE_OPENAI_USERAGENT_KEY];
     const sessionToken = session[CHROME_STORAGE_OPENAI_SESSION_KEY];
+    const controller = new AbortController();
+    const signal = controller.signal;
 
     const accessToken = await this.getAccessToken();
     const headers = {
@@ -89,18 +90,25 @@ class ChatGPTApi {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
     const port = chrome.tabs.connect(tabs[0]?.id || 0, { name: MESSAGE_PASSING_STREAM_OPENAI_CHAT_PORT });
 
+    chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+      if (request && request.code === MESSAGE_PASSING_STOP_STREAM_OPENAI_CHAT) {
+        sendMessage("[DONE]")
+        controller.abort()
+      }
+    })
+
     const sendMessage = async (message: any) => {
       port.postMessage(message)
     }
 
     await fetch(`${this.backendApiBaseUrl}/conversation`, {
       method: "POST",
+      signal: signal,
       headers,
       body: JSON.stringify(body),
     })
       .then((response) => {
         if (response.status !== 200 && chrome && chrome.tabs) {
-          openChatTab()
           sendMessage({ code: MESSAGE_PASSING_CONVERSATION_FAILED })
           return
         }
@@ -125,7 +133,6 @@ class ChatGPTApi {
 
                 // When no more data needs to be consumed, close the stream
                 if (done) {
-                  port.disconnect();
                   controller.close();
                   return;
                 }

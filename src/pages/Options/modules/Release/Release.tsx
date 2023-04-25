@@ -13,9 +13,14 @@ export const Release: React.FC<ReleaseProps> = (props) => {
         Releases
       </StyledPanelHeaderTypography>
       <StyledVersionTypography>
-        Version 1.0.1
+        Version 1.0.1 and Version 1.0.2
       </StyledVersionTypography>
       <StyledFunctionalityList>
+        <StyledFunctionalityListItem>
+          <StyledListItemTypography>
+            Add ability to stop streaming chat
+          </StyledListItemTypography>
+        </StyledFunctionalityListItem>
         <StyledFunctionalityListItem>
           <StyledListItemTypography>
             Resolve minor bugs

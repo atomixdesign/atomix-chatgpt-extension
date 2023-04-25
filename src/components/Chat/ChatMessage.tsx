@@ -37,7 +37,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ children, username, is
       <StyledChatTextGrid item>
         {isError ? (
           <StyledErrorText variant="body2">
-            {"Connection Error!\nPlease re-authenticate at"} <a href="https://chat.openai.com/">chat.openai.com</a>.
+            {"Connection Error!\nPlease re-authenticate at"} <a target='_blank' href="https://chat.openai.com/">chat.openai.com</a>.
           </StyledErrorText>
         ) : (
           <StyledReactMarkdown rehypePlugins={[[rehypeHighlight, { detect: true }]]} $isStreaming={isStreaming}>

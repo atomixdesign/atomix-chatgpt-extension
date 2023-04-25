@@ -1,4 +1,3 @@
-import { openChatTab } from "../../lib/openOpenAITab";
 import { getOpenAIAccessToken, setOpenAIAccessToken } from "../../storage/accessToken";
 
 export const getSessionAccessToken = async (userAgent: string, sessionToken: string) => {
@@ -31,7 +30,7 @@ export const getSessionAccessToken = async (userAgent: string, sessionToken: str
       .then((response) => response.json())
   }
   catch (error) {
-    openChatTab()
+    return 
   }
 
   setOpenAIAccessToken(res)

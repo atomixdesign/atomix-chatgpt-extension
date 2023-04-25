@@ -1,13 +1,15 @@
+import { faRotateRight, faStop } from '@fortawesome/pro-light-svg-icons';
 import { faPlusCircle } from '@fortawesome/pro-regular-svg-icons';
 import { Box, Typography, styled } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useChatHistory } from '../../hooks/useChatHistory';
 import { useChatName } from '../../hooks/useChatName';
 import { useChatSelect } from '../../hooks/useChatSelect';
-import { MESSAGE_PASSING_GET_OPENAI_CHAT_BY_ID } from '../../lib/consts';
+import { MESSAGE_PASSING_GET_OPENAI_CHAT_BY_ID, MESSAGE_PASSING_STOP_STREAM_OPENAI_CHAT } from '../../lib/consts';
 import { ChatHistory } from '../../types/openai';
 import { Container } from '../Container/Container';
 import { Icon } from '../Icon/Icon';
+import { ChatCleanButton } from './ChatCleanButton';
 import { ChatContext } from './ChatContext';
 import { ChatMessage } from './ChatMessage';
 import { Dropdown, StyledDropdownItem, StyledDropdownItemTypography } from './ChatTitleDropdown';
@@ -48,6 +50,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ ...props }) => {
     setDropdownOpen(false)
   }
 
+  const onStopStreaming = () => {
+    chrome.runtime.sendMessage({ code: MESSAGE_PASSING_STOP_STREAM_OPENAI_CHAT })
+  }
+
   const onStartNewChat = () => {
     if (chatContext.setTitle) {
       chatContext.setTitle('New chat')
@@ -60,6 +66,8 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ ...props }) => {
     }
     setDropdownOpen(false)
   }
+
+  const lastChatMessage = chatContext.conversation[chatContext.conversation.length - 1]
 
   return (
     <StyledChatWindow {...props} ref={windowRef}>
@@ -93,9 +101,29 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ ...props }) => {
 
       {chatContext.conversation.length > 0 && chatContext.conversation.map(({ isChatGPT, isStreaming, isError, message }) => {
         return (
-          <ChatMessage isChatGPT={isChatGPT || false} isStreaming={isStreaming} isError={isError} username={chatContext.username}>
-            {`${message}`}
-          </ChatMessage>
+          <>
+            <ChatMessage isChatGPT={isChatGPT || false} isStreaming={isStreaming} isError={isError} username={chatContext.username}>
+              {`${message}`}
+            </ChatMessage>
+
+            {!isError && isStreaming && <StyledChatCleanButtonContainer>
+              <ChatCleanButton
+                icon={<StyledButtonIcon icon={faStop} />}
+                onClick={onStopStreaming}
+              >
+                Stop generating
+              </ChatCleanButton>
+            </StyledChatCleanButtonContainer>}
+
+            {isError && !isStreaming && <StyledChatCleanButtonContainer>
+              <ChatCleanButton
+                icon={<StyledButtonIcon icon={faRotateRight} />}
+                onClick={onStartNewChat}
+              >
+                Reload
+              </ChatCleanButton>
+            </StyledChatCleanButtonContainer>}
+          </>
         )
       })}
       <StyledBox ref={windowRef} />
@@ -144,4 +172,20 @@ export const StyledAddNewChatContainer = styled('div')`
 export const StyledAddNewChatIcon = styled(Icon)`
   font-size: ${props => props.theme.typography.pxToRem(16)};
   margin-left: ${props => props.theme.typography.pxToRem(6)};
+`
+
+export const StyledChatCleanButtonContainer = styled('div')`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  right: ${props => props.theme.typography.pxToRem(0)};
+  left: ${props => props.theme.typography.pxToRem(0)};
+  bottom: ${props => props.theme.typography.pxToRem(158)};
+  z-index: 100;
+`
+
+export const StyledButtonIcon = styled(Icon)`
+  font-size: ${props => props.theme.typography.pxToRem(16)};
+  max-width: ${props => props.theme.typography.pxToRem(16)};
+  max-height: ${props => props.theme.typography.pxToRem(16)};
 `
