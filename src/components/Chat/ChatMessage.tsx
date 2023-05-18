@@ -1,7 +1,8 @@
 import { Grid } from '@mui/material';
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, useContext } from 'react';
 import rehypeHighlight from 'rehype-highlight/lib';
 import { ENV } from '../../lib/consts';
+import { SidebarSettingsContext } from '../../settings/sidebar';
 import {
   StyledAvatar, StyledAvatarGrid, StyledAvatarTypography,
   StyledChatGPTAvatar,
@@ -18,12 +19,13 @@ export type ChatMessageProps = Omit<ComponentProps<typeof Grid>, 'container' | '
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ children, username, isStreaming, isChatGPT, isError, ...props }) => {
+  const { model } = useContext(SidebarSettingsContext)
 
   return (
     <StyledChatMessageContainer container flexDirection={'row'} justifyContent={'flex-start'} {...props}>
       <StyledAvatarGrid item>
         {isChatGPT ? (
-          <StyledChatGPTAvatar>
+          <StyledChatGPTAvatar $isGPT4={model === 'gpt-4'}>
             <img src={ENV === 'production' ? chrome.runtime.getURL('openai.svg') : 'openai.svg'} />
           </StyledChatGPTAvatar>
         ) : (
