@@ -110,6 +110,8 @@ class ChatGPTApi {
       .then((response) => {
         if (response.status !== 200 && chrome && chrome.tabs) {
           sendMessage({ code: MESSAGE_PASSING_CONVERSATION_FAILED })
+          chrome.storage.local.clear()
+          
           return
         }
 
