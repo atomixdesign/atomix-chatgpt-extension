@@ -13,6 +13,16 @@ export const Release: React.FC<ReleaseProps> = (props) => {
         Releases
       </StyledPanelHeaderTypography>
       <StyledVersionTypography>
+        Version 1.0.3
+      </StyledVersionTypography>
+      <StyledFunctionalityList>
+        <StyledFunctionalityListItem>
+          <StyledListItemTypography>
+            Resolve session bug and change GPT4 color
+          </StyledListItemTypography>
+        </StyledFunctionalityListItem>
+      </StyledFunctionalityList>
+      <StyledVersionTypography>
         Version 1.0.1 and Version 1.0.2
       </StyledVersionTypography>
       <StyledFunctionalityList>
