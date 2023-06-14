@@ -1,7 +1,8 @@
-import { isNull } from "lodash";
+
 import { useEffect } from "react";
 import { ChatContextType } from "../components/Chat/ChatContext";
 import { ENV, MESSAGE_PASSING_GET_OPENAI_CHAT_NAME, MESSAGE_PASSING_STEAM_OPENAI_CHAT_NAME_PORT } from "../lib/consts";
+import { isNull } from "../lib/isNull";
 import { ChatHistory } from "../types/openai";
 
 export const useChatName = (chatContext: ChatContextType, chatHistory: ChatHistory[], setChatHistory: (chatHistory: ChatHistory[]) => void) => {
@@ -26,9 +27,8 @@ export const useChatName = (chatContext: ChatContextType, chatHistory: ChatHisto
       return
     }
 
-
     port.onMessage.addListener((msg) => {
-      if (!msg || isNull(msg)) {
+      if (isNull(msg)) {
         return
       }
 

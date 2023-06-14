@@ -3,10 +3,6 @@ import { getOpenAIAccessToken, setOpenAIAccessToken } from "../../storage/access
 export const getSessionAccessToken = async (userAgent: string, sessionToken: string) => {
   let res = await getOpenAIAccessToken()
 
-  // if (res) {
-  //   return res?.accessToken
-  // }
-
   const url = "https://chat.openai.com/api/auth/session";
   const headers = {
     cookie: `__Secure-next-auth.session-token=${sessionToken}`,
@@ -34,7 +30,7 @@ export const getSessionAccessToken = async (userAgent: string, sessionToken: str
       .then((response) => response.json())
   }
   catch (error) {
-    chrome.tabs.create({ url: 'https://chat.openai.com/chat' })
+    return 
   }
 
   setOpenAIAccessToken(res)

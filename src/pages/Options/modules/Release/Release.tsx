@@ -13,6 +13,31 @@ export const Release: React.FC<ReleaseProps> = (props) => {
         Releases
       </StyledPanelHeaderTypography>
       <StyledVersionTypography>
+        Version 1.0.3
+      </StyledVersionTypography>
+      <StyledFunctionalityList>
+        <StyledFunctionalityListItem>
+          <StyledListItemTypography>
+            Resolve session bug and change GPT4 color
+          </StyledListItemTypography>
+        </StyledFunctionalityListItem>
+      </StyledFunctionalityList>
+      <StyledVersionTypography>
+        Version 1.0.1 and Version 1.0.2
+      </StyledVersionTypography>
+      <StyledFunctionalityList>
+        <StyledFunctionalityListItem>
+          <StyledListItemTypography>
+            Add ability to stop streaming chat
+          </StyledListItemTypography>
+        </StyledFunctionalityListItem>
+        <StyledFunctionalityListItem>
+          <StyledListItemTypography>
+            Resolve minor bugs
+          </StyledListItemTypography>
+        </StyledFunctionalityListItem>
+      </StyledFunctionalityList>
+      <StyledVersionTypography>
         Version 1.0.0
       </StyledVersionTypography>
       <StyledFunctionalityList>
@@ -44,6 +69,7 @@ export const Release: React.FC<ReleaseProps> = (props) => {
 export const StyledPanelHeaderTypography = styled(Typography)`
   color: ${(props) => props.theme.palette.text.primary};
   font-size: ${(props) => props.theme.typography.pxToRem(28)};
+  margin-bottom: ${(props) => props.theme.typography.pxToRem(40)};
   font-weight: 600;
 `
 
@@ -51,7 +77,6 @@ export const StyledVersionTypography = styled(Typography)`
   color: ${(props) => props.theme.palette.text.primary};
   font-size: ${(props) => props.theme.typography.pxToRem(18)};
   font-weight: 600;
-  margin-top: ${(props) => props.theme.typography.pxToRem(40)};
 `
 
 export const StyledFunctionalityList = styled(List)`

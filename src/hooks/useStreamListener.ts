@@ -10,11 +10,16 @@ export const useStreamListener = ({
 }: ChatContextType) => {
 
   useEffect(() => {
+    const customEvent = new CustomEvent("conversationChanged", {
+      detail: conversation,
+    });
+    window.dispatchEvent(customEvent);
+  }, [JSON.stringify(conversation)]);
+
+  useEffect(() => {
     if (!setConversation || ENV !== 'production') {
       return
     }
-
-    let chatMessageState: Message | null = null
 
     const streamListener = (port: chrome.runtime.Port) => {
       if (port.name !== MESSAGE_PASSING_STREAM_OPENAI_CHAT_PORT) {
@@ -33,18 +38,7 @@ export const useStreamListener = ({
           return
         }
 
-        // Streaming complete
         if (msg.includes('[DONE]')) {
-          if (chatMessageState) {
-            setConversation([...conversation, {
-              ...chatMessageState,
-              isStreaming: false
-            }])
-
-            if (conversation.length <= 1 && !chatMessageState.isError) {
-              chrome.runtime.sendMessage({ code: MESSAGE_PASSING_GET_OPENAI_CHAT_HISTORY })
-            }
-          }
           return
         }
 
@@ -68,14 +62,13 @@ export const useStreamListener = ({
           const message = data.message.content;
           const conversationId = data.conversation_id
 
-          chatMessageState = {
+          const tempState = {
             id,
             isChatGPT: role === "assistant",
             isStreaming: true,
             message: message.parts[0].trim()
           }
-
-          setConversation([...conversation, chatMessageState])
+          setConversation([...conversation, tempState])
 
           if (setConversationId) {
             setConversationId(conversationId)
@@ -83,11 +76,57 @@ export const useStreamListener = ({
         }
       })
     }
-    
+
     chrome.runtime.onConnect.addListener(streamListener)
 
     return () => {
       chrome.runtime.onConnect.removeListener(streamListener)
     }
-  }, [conversation, setConversation, setConversationId])
+  }, [JSON.stringify(conversation), setConversation, setConversationId])
+
+  useEffect(() => {
+    const streamCompleteListener = (port: chrome.runtime.Port) => {
+      if (port.name !== MESSAGE_PASSING_STREAM_OPENAI_CHAT_PORT) {
+        return
+      }
+
+      let streamedConversation: Message[] = []
+      const onConversationChanged = (event: any) => {
+        // Handle state change here
+        streamedConversation = event.detail;
+      };
+
+      window.addEventListener("conversationChanged", onConversationChanged);
+
+      const streamPortListener = (msg: any) => {
+        // Streaming complete
+        if (msg.includes('[DONE]')) {
+          const newConversation = streamedConversation.slice(0, -1);
+          let lastElementIndex = streamedConversation.length - 1;
+          let updatedLastElement = {
+            ...streamedConversation[lastElementIndex],
+            isStreaming: false
+          };
+          newConversation.push(updatedLastElement);
+    
+          if (setConversation) {
+            setConversation(newConversation)
+    
+            if (newConversation.length <= 2 && !updatedLastElement.isError) {
+              chrome.runtime.sendMessage({ code: MESSAGE_PASSING_GET_OPENAI_CHAT_HISTORY })
+            }
+          }
+        }
+      }
+
+      port.onMessage.addListener(streamPortListener)
+    }
+
+    chrome.runtime.onConnect.addListener(streamCompleteListener)
+
+    return () => {
+      chrome.runtime.onConnect.removeListener(streamCompleteListener)
+    }
+
+  }, [JSON.stringify(conversation), setConversation])
 }

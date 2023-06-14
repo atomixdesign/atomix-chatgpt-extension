@@ -35,7 +35,7 @@ export const getProfile = async (userAgent: string, sessionToken: string) => {
       .then((response) => response.json())
   }
   catch (error) {
-    chrome.tabs.create({ url: 'https://chat.openai.com/chat' })
+    throw new Error("Fetch Failed");
   }
   setOpenAIAccessToken(res)
 

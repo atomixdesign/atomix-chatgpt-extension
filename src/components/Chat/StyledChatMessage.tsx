@@ -19,6 +19,10 @@ export const StyledErrorText = styled(Typography)`
   letter-spacing: 3%;
   line-height: 1.4;
   white-space: pre-line;
+
+  a {
+    color: ${props => props.theme.palette.custom.error};
+  }
 `
 
 export const StyledReactMarkdown = styled(ReactMarkdown, { shouldForwardProp: (prop) => prop !== '$isStreaming' })<{ $isStreaming?: boolean }>`
@@ -48,10 +52,10 @@ export const StyledAvatarGrid = styled(Grid)`
   width: ${props => props.theme.typography.pxToRem(36)};
 `
 
-export const StyledChatGPTAvatar = styled(Avatar)`
+export const StyledChatGPTAvatar = styled(Avatar, { shouldForwardProp: (prop) => prop !== '$isGPT4' })<{ $isGPT4?: boolean }>`
   width: ${props => props.theme.typography.pxToRem(36)};
   height: ${props => props.theme.typography.pxToRem(36)};
-  background-color: ${props => props.theme.palette.custom.openai};
+  background-color: ${props => props.$isGPT4 ? props.theme.palette.custom.gpt4 : props.theme.palette.custom.openai};
 `
 
 export const StyledAvatar = styled(Avatar)`

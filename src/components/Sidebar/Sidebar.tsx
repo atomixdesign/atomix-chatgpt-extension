@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useProfile } from '../../hooks/useProfile';
 import { useSidebarOpen } from '../../hooks/useSidebarOpen';
 import { useStreamListener } from '../../hooks/useStreamListener';
+import { MESSAGE_PASSING_GET_OPENAI_SESSION_TOKEN } from '../../lib/consts';
 import { stringifyKeys } from '../../lib/stringifyKeys';
 import { SidebarSettings, SidebarSettingsContext } from '../../settings/sidebar';
 import { ChatContext, ChatContextType, Message } from '../Chat/ChatContext';
@@ -54,6 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
 
   // Open or Close Sidebar action
   const onSidebarOpen = () => {
+    chrome.runtime.sendMessage({ code: MESSAGE_PASSING_GET_OPENAI_SESSION_TOKEN })
     setOpen(true)
   }
 
@@ -66,6 +68,9 @@ export const Sidebar: React.FC<SidebarProps> = () => {
   const onToggleSidebar = (e: KeyboardEvent) => {
     if (keyboardShortcut && stringifyKeys(keyboardShortcut) === stringifyKeys(e)) {
       e.preventDefault()
+      if (!open) {
+        chrome.runtime.sendMessage({ code: MESSAGE_PASSING_GET_OPENAI_SESSION_TOKEN })
+      }
       setOpen(!open)
     }
 

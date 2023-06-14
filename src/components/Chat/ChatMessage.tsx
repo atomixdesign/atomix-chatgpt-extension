@@ -1,7 +1,8 @@
 import { Grid } from '@mui/material';
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, useContext } from 'react';
 import rehypeHighlight from 'rehype-highlight/lib';
 import { ENV } from '../../lib/consts';
+import { SidebarSettingsContext } from '../../settings/sidebar';
 import {
   StyledAvatar, StyledAvatarGrid, StyledAvatarTypography,
   StyledChatGPTAvatar,
@@ -18,12 +19,13 @@ export type ChatMessageProps = Omit<ComponentProps<typeof Grid>, 'container' | '
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ children, username, isStreaming, isChatGPT, isError, ...props }) => {
+  const { model } = useContext(SidebarSettingsContext)
 
   return (
     <StyledChatMessageContainer container flexDirection={'row'} justifyContent={'flex-start'} {...props}>
       <StyledAvatarGrid item>
         {isChatGPT ? (
-          <StyledChatGPTAvatar>
+          <StyledChatGPTAvatar $isGPT4={model === 'gpt-4'}>
             <img src={ENV === 'production' ? chrome.runtime.getURL('openai.svg') : 'openai.svg'} />
           </StyledChatGPTAvatar>
         ) : (
@@ -37,7 +39,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ children, username, is
       <StyledChatTextGrid item>
         {isError ? (
           <StyledErrorText variant="body2">
-            {"Connection Error!\nPlease re-authenticate at"} <u>chat.openai.com</u>.
+            {"Connection Error!\nPlease re-authenticate at"} <a target='_blank' href="https://chat.openai.com/">chat.openai.com</a>.
           </StyledErrorText>
         ) : (
           <StyledReactMarkdown rehypePlugins={[[rehypeHighlight, { detect: true }]]} $isStreaming={isStreaming}>
